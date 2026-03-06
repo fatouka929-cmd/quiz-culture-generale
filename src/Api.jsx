@@ -39,3 +39,8 @@ function shuffleAnswers(question) {
     return allAnswers;
 }
 //Du coup l'ordre change à chaque fois aléatoirement
+
+
+
+
+export { fetchQuestions, shuffleAnswers };
