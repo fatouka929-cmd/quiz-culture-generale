@@ -40,7 +40,4 @@ function shuffleAnswers(question) {
 }
 //Du coup l'ordre change à chaque fois aléatoirement
 
-
-
-
 export { fetchQuestions, shuffleAnswers };
