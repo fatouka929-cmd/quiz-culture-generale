@@ -168,3 +168,38 @@ body {
   color: #888;
   margin-bottom: 2rem;
 }
+
+
+.select-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 1.2rem;
+}
+
+.select-group label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #888;
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.select-group select {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  border: 2px solid #e0d4ff;
+  background: #f5f0ff;
+  color: #5a3e9b;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.select-group select:focus {
+  border-color: #764ba2;
+}

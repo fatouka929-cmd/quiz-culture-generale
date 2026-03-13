@@ -1,11 +1,14 @@
 // Fonction pour récupérer les questions depuis l'API
-async function fetchQuestions() {
-    const response = await fetch("https://opentdb.com/api.php?amount=10");
+async function fetchQuestions(difficulty = 'easy', category = '9') {
+    const response = await fetch(`https://opentdb.com/api.php?amount=10&difficulty=${difficulty}&category=${category}`);
+    
     //fetch() va chercher les données sur l'API
     const data = await response.json();
+    
     // data.results contient le tableau des 10 questions
     
     return data.results.map(question => {
+        
         // Pour chaque question, on décode les entités HTML
         return {
             question: decodeHTML(question.question),

@@ -10,8 +10,21 @@ function App() {
   const [isFinished, setIsFinished] = useState(false)
   const [loading, setLoading] = useState(true)
   const [gameStarted, setGameStarted] = useState(false)
+
+  const [difficulty, setDifficulty] = useState('easy')
+  const [category, setCategory] = useState('9')
+
+
+  const handleReplay = () => {
+  setScore(0)
+  setCurrentQuestion(0)
+  setIsFinished(false)
+  setLoading(true)
+  setGameStarted(false)
+}
+  
   useEffect(() => {
-    fetchQuestions().then(data => {
+    fetchQuestions(difficulty, category).then(data => {
       const withShuffled = data.map(q => ({
         ...q,
         shuffledAnswers: shuffleAnswers(q)
@@ -32,15 +45,40 @@ function App() {
     }
   }
 
-  if (!gameStarted) return (
-    <div className="quiz-container score-screen">
-      <h1 className="accueil-titre">🧠 Quiz Culture Générale</h1>
-      <p className="accueil-description">Pour ceux qui veulent en savoir plus, chaque jour.</p>
+  if (!gameStarted) {
+  return (
+    <div className="quiz-container">
+      <h1 className="accueil-titre">🎯 Quiz Culture Générale</h1>
+      <p className="accueil-description">Sublimez votre quotidien par la connaissance !</p>
+
+      <div className="select-group">
+        <label>Difficulté</label>
+        <select value={difficulty} onChange={e => setDifficulty(e.target.value)}>
+          <option value="easy">Facile</option>
+          <option value="medium">Moyen</option>
+          <option value="hard">Difficile</option>
+        </select>
+      </div>
+
+      <div className="select-group">
+        <label>Catégorie</label>
+        <select value={category} onChange={e => setCategory(e.target.value)}>
+          <option value="9">Culture générale</option>
+          <option value="21">Sport</option>
+          <option value="23">Histoire</option>
+          <option value="17">Science</option>
+          <option value="11">Films</option>
+          <option value="12">Musique</option>
+          <option value="15">Jeux vidéo</option>
+        </select>
+      </div>
+
       <button className="replay-btn" onClick={() => setGameStarted(true)}>
-        Commencer 🚀
+        Commencer →
       </button>
     </div>
   )
+}
 
   if (loading) return <p>Chargement...</p>
 
