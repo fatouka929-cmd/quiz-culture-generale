@@ -203,3 +203,34 @@ body {
 .select-group select:focus {
   border-color: #764ba2;
 }
+
+.answer-btn.correct {
+  background: #22c55e;
+  color: white;
+  border-color: #22c55e;
+}
+
+.answer-btn.wrong {
+  background: #ef4444;
+  color: white;
+  border-color: #ef4444;
+}
+
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOut {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(-100%); opacity: 0; }
+}
+
+.slide-in {
+  animation: slideIn 0.8s ease;
+}
+
+.slide-out {
+  animation: slideOut 0.8s ease;
+}
