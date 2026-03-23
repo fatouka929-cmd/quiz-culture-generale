@@ -488,9 +488,9 @@ body {
 
 
 
-#responsive
+/* Responsive Design */
 
-@media (max-width: 600px) {
+ @media (max-width: 600px) {
   #root {
     padding: 1rem;
   }
