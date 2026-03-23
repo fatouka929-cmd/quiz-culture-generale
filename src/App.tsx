@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { fetchQuestions, shuffleAnswers } from './Api.tsx'
 import './App.css'
 import confetti from 'canvas-confetti'
@@ -10,7 +10,6 @@ interface Question {
   shuffledAnswers: string[]
 }
 
-// Composant particules en arrière-plan
 function Particles() {
   return (
     <div className="particles">
@@ -62,16 +61,17 @@ function App() {
       setLoading(false)
     })
   }, [gameStarted])
-    useEffect(() => {
-      if (!isFinished) return
-      if (score >= 1) {
-        confetti({
-          particleCount: 150,
-          spread: 80,
-          origin: { y: 0.6 }
-        })
-      }
-    }, [isFinished])
+
+  useEffect(() => {
+    if (!isFinished) return
+    if (score >= 1) {
+      confetti({
+        particleCount: 150,
+        spread: 80,
+        origin: { y: 0.6 }
+      })
+    }
+  }, [isFinished])
 
   function handleAnswer(answer: string) {
     setSelectedAnswer(answer)
@@ -88,11 +88,10 @@ function App() {
         }
         setSelectedAnswer(null)
         setAnimating(false)
-      }, 600)
+      }, 500)
     }, 800)
   }
 
-  // ── PAGE DE BIENVENUE ──
   if (showWelcome) {
     return (
       <div className="welcome-screen">
@@ -126,79 +125,92 @@ function App() {
     )
   }
 
-  // ── PAGE DE CONFIGURATION ──
   if (!gameStarted) {
     return (
-      <div className="quiz-container">
-        <h1 className="accueil-titre">🎯 Quiz Culture Générale</h1>
-        <p className="accueil-description">Sublimez votre quotidien par la connaissance !</p>
-
-        <div className="select-group">
-          <label>Difficulté</label>
-          <select value={difficulty} onChange={e => setDifficulty(e.target.value)}>
-            <option value="easy">Facile</option>
-            <option value="medium">Moyen</option>
-            <option value="hard">Difficile</option>
-          </select>
+      <>
+        <Particles />
+        <div className="quiz-container">
+          <h1 className="accueil-titre">Quiz Culture Générale</h1>
+          <p className="accueil-description">Sublimez votre quotidien par la connaissance !</p>
+          <div className="select-group">
+            <label>Difficulté</label>
+            <select value={difficulty} onChange={e => setDifficulty(e.target.value)}>
+              <option value="easy">Facile</option>
+              <option value="medium">Moyen</option>
+              <option value="hard">Difficile</option>
+            </select>
+          </div>
+          <div className="select-group">
+            <label>Catégorie</label>
+            <select value={category} onChange={e => setCategory(e.target.value)}>
+              <option value="9">Culture générale</option>
+              <option value="21">Sport</option>
+              <option value="23">Histoire</option>
+              <option value="17">Science</option>
+              <option value="11">Films</option>
+              <option value="12">Musique</option>
+              <option value="15">Jeux vidéo</option>
+            </select>
+          </div>
+          <button className="replay-btn" onClick={() => setGameStarted(true)}>
+            Commencer →
+          </button>
         </div>
-
-        <div className="select-group">
-          <label>Catégorie</label>
-          <select value={category} onChange={e => setCategory(e.target.value)}>
-            <option value="9">Culture générale</option>
-            <option value="21">Sport</option>
-            <option value="23">Histoire</option>
-            <option value="17">Science</option>
-            <option value="11">Films</option>
-            <option value="12">Musique</option>
-            <option value="15">Jeux vidéo</option>
-          </select>
-        </div>
-
-        <button className="replay-btn" onClick={() => setGameStarted(true)}>
-          Commencer →
-        </button>
-      </div>
+      </>
     )
   }
 
-  if (loading) return <p>Chargement...</p>
+  if (loading) return (
+    <>
+      <Particles />
+      <p>Chargement...</p>
+    </>
+  )
 
   if (isFinished) return (
-    <div className='quiz-container'>
-      <h1>Quiz terminé !</h1>
-      <div className='score-number'>Score : {score} / {questions.length}</div>
-      <p className='bien-joue'>Bien joué ! 🎉</p>
-      <button className='replay-btn' onClick={handleReplay}>
-        Rejouer 🔄
-      </button>
-    </div>
+    <>
+      <Particles />
+      <div className='quiz-container'>
+        <h1>Quiz terminé !</h1>
+        <div className='score-number'>Score : {score} / {questions.length}</div>
+        <p className='bien-joue'>Bien joué ! 🎉</p>
+        <button className='replay-btn' onClick={handleReplay}>
+          Rejouer 🔄
+        </button>
+      </div>
+    </>
   )
 
   const question = questions[currentQuestion]
 
   return (
-    <div className="quiz-container">
-      <div className={animating ? 'slide-out' : 'slide-in'}>
-        <p className="question-number">Question {currentQuestion + 1} / {questions.length}</p>
-        <div className="progress-bar">
-          <div className="progress-fill" style={{ width: `${(currentQuestion / questions.length) * 100}%` }}></div>
-        </div>
-        <p className='question-text'>{question.question}</p>
-        <div className='answers-grid'>
-          {question.shuffledAnswers.map((answer: string, i: number) => (
-            <button
-              key={i}
-              className={`answer-btn ${selectedAnswer === answer ? (answer === questions[currentQuestion].correct_answer ? 'correct' : 'wrong') : ''}`}
-              onClick={() => handleAnswer(answer)}
-              disabled={!!selectedAnswer}
-            >
-              {answer}
-            </button>
-          ))}
+    <>
+      <Particles />
+      <div className="quiz-container">
+        <div className={animating ? 'slide-out' : 'slide-in'}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <p className="question-number">Question {currentQuestion + 1} / {questions.length}</p>
+            <button className="quit-btn" onClick={handleReplay}>⬅ Quitter</button>
+          </div>
+          <div className="progress-bar">
+            <div className="progress-fill" style={{ width: `${(currentQuestion / questions.length) * 100}%` }}></div>
+          </div>
+          <p className='question-text'>{question.question}</p>
+          <div className='answers-grid'>
+            {question.shuffledAnswers.map((answer: string, i: number) => (
+              <button
+                key={i}
+                className={`answer-btn ${selectedAnswer === answer ? (answer === questions[currentQuestion].correct_answer ? 'correct' : 'wrong') : ''}`}
+                onClick={() => handleAnswer(answer)}
+                disabled={!!selectedAnswer}
+              >
+                {answer}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
