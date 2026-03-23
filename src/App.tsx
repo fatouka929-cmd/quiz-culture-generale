@@ -62,6 +62,16 @@ function App() {
       setLoading(false)
     })
   }, [gameStarted])
+    useEffect(() => {
+      if (!isFinished) return
+      if (score >= 1) {
+        confetti({
+          particleCount: 150,
+          spread: 80,
+          origin: { y: 0.6 }
+        })
+      }
+    }, [isFinished])
 
   function handleAnswer(answer: string) {
     setSelectedAnswer(answer)
