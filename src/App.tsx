@@ -1,14 +1,19 @@
-import { useState, useEffect } from 'react'
-import { fetchQuestions, shuffleAnswers } from './Api.tsx'
-import './App.css'
-import confetti from 'canvas-confetti'
+
+// App.tsx
+
+
+
+import { useState, useEffect } from 'react' // Importation des hooks useState et useEffect de React pour gérer l'état et les effets secondaires dans le composant App
+import { fetchQuestions, shuffleAnswers } from './Api.tsx'// Importation des fonctions fetchQuestions et shuffleAnswers depuis le fichier Api.tsx pour récupérer les questions du quiz et mélanger les réponses
+import './App.css' // Importation du fichier CSS pour styliser le composant App
+import confetti from 'canvas-confetti' // Importation de la bibliothèque canvas-confetti pour afficher des confettis lorsque le quiz est terminé et que le score est bon
 
 interface Question {
   question: string
   correct_answer: string
   incorrect_answers: string[]
   shuffledAnswers: string[]
-}
+} // Définition de l'interface Question pour typer les objets question récupérés de l'API, incluant la question, la réponse correcte, les réponses incorrectes et les réponses mélangées
 
 function Particles() {
   return (
@@ -25,9 +30,9 @@ function Particles() {
       ))}
     </div>
   )
-}
+} // Composant Particles pour afficher des particules animées en arrière-plan, utilisé à la fois sur l'écran d'accueil et pendant le quiz pour ajouter une touche visuelle dynamique
 
-function App() {
+function App() { // Composant principal de l'application qui gère le quiz de culture générale
   const [questions, setQuestions] = useState<Question[]>([])
   const [currentQuestion, setCurrentQuestion] = useState<number>(0)
   const [score, setScore] = useState<number>(0)
@@ -39,8 +44,9 @@ function App() {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
   const [animating, setAnimating] = useState<boolean>(false)
   const [showWelcome, setShowWelcome] = useState<boolean>(true)
+  const [timeLeft, setTimeLeft] = useState<number>(15) 
 
-  const handleReplay = () => {
+  const handleReplay = () => { // Fonction pour réinitialiser le quiz et recommencer une nouvelle partie, appelée lorsque l'utilisateur clique sur le bouton "Rejouer" à la fin du quiz ou sur le bouton "Quitter" pendant le quiz
     setScore(0)
     setCurrentQuestion(0)
     setIsFinished(false)
@@ -48,7 +54,9 @@ function App() {
     setGameStarted(false)
     setShowWelcome(true)
   }
+  
 
+  // useEffect pour récupérer les questions de l'API lorsque le jeu commence, en fonction de la difficulté et de la catégorie sélectionnées par l'utilisateur. Les questions sont ensuite mélangées avec la fonction shuffleAnswers avant d'être stockées dans l'état.
   useEffect(() => {
     if (!gameStarted) return
     setLoading(true)
@@ -73,6 +81,24 @@ function App() {
     }
   }, [isFinished])
 
+
+  useEffect(() => {
+  if (!gameStarted || isFinished || loading) return
+  setTimeLeft(15)
+}, [currentQuestion])
+
+useEffect(() => {
+  if (!gameStarted || isFinished || loading) return
+  if (timeLeft === 0) {
+    handleAnswer('')
+    return
+  }
+  const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
+  return () => clearTimeout(timer)
+}, [timeLeft, gameStarted, isFinished, loading])
+
+
+// Fonction pour gérer la sélection d'une réponse par l'utilisateur. Elle met à jour l'état de la réponse sélectionnée, vérifie si la réponse est correcte et met à jour le score en conséquence. Ensuite, elle déclenche une animation avant de passer à la question suivante ou de terminer le quiz si c'était la dernière question.
   function handleAnswer(answer: string) {
     setSelectedAnswer(answer)
     setTimeout(() => {
@@ -91,6 +117,8 @@ function App() {
       }, 500)
     }, 800)
   }
+
+  // Affichage conditionnel pour gérer les différentes étapes du quiz : écran de bienvenue, sélection de la difficulté et de la catégorie, chargement des questions, affichage des questions et des réponses, et écran de fin avec le score final.
 
   if (showWelcome) {
     return (
@@ -124,7 +152,8 @@ function App() {
       </div>
     )
   }
-
+  
+  // Si le jeu n'a pas encore commencé, on affiche l'écran de sélection de la difficulté et de la catégorie, ainsi qu'un bouton pour démarrer le quiz. Les options de difficulté et de catégorie sont liées à l'état pour permettre à l'utilisateur de les sélectionner avant de commencer.
   if (!gameStarted) {
     return (
       <>
@@ -160,14 +189,14 @@ function App() {
     )
   }
 
-  if (loading) return (
+  if (loading) return ( // Si les questions sont en cours de chargement, on affiche un message de chargement avec les particules en arrière-plan pour indiquer à l'utilisateur que le quiz est en train de se préparer.
     <>
       <Particles />
       <p>Chargement...</p>
     </>
   )
 
-  if (isFinished) return (
+  if (isFinished) return ( // Si le quiz est terminé, on affiche l'écran de fin avec le score final, un message de félicitations et un bouton pour rejouer. Les confettis sont déclenchés dans un useEffect lorsque le quiz se termine et que le score est supérieur ou égal à 1 pour célébrer la réussite de l'utilisateur.
     <>
       <Particles />
       <div className='quiz-container'>
@@ -181,15 +210,17 @@ function App() {
     </>
   )
 
-  const question = questions[currentQuestion]
+  const question = questions[currentQuestion] // Récupération de la question actuelle à afficher, basée sur l'index currentQuestion dans le tableau de questions récupéré de l'API. Cette variable est utilisée pour afficher la question et les réponses correspondantes dans le rendu du composant.
 
-  return (
+  return ( // Rendu principal du composant App lorsque le quiz est en cours. Il affiche la question actuelle, les réponses mélangées, un compteur de temps, le numéro de la question en cours et un bouton pour quitter le quiz. Les réponses sont stylisées en fonction de la sélection de l'utilisateur et de la validité de la réponse.
     <>
       <Particles />
       <div className="quiz-container">
         <div className={animating ? 'slide-out' : 'slide-in'}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <p className="question-number">Question {currentQuestion + 1} / {questions.length}</p>
+              <span className={`timer ${timeLeft <= 5 ? 'timer-urgent' : ''}`}>⏱ {timeLeft}s</span>
+
             <button className="quit-btn" onClick={handleReplay}>⬅ Quitter</button>
           </div>
           <div className="progress-bar">
@@ -214,4 +245,4 @@ function App() {
   )
 }
 
-export default App
+export default App // Exportation du composant App pour pouvoir l'utiliser dans d'autres parties de l'application.

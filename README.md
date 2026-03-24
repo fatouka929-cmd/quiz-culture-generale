@@ -1,16 +1,73 @@
-# React + Vite
+#  Quiz Culture Générale
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Une application web de quiz interactive développée avec React et TypeScript.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+##  Description
 
-## React Compiler
+Quiz Culture Générale est une application qui permet de tester ses connaissances sur une variété de sujets. Les questions sont récupérées dynamiquement depuis l'API **Open Trivia DB**. Le joueur peut choisir sa catégorie et son niveau de difficulté avant de commencer.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+##  Fonctionnalités
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+- Choix de la **difficulté** (Facile, Moyen, Difficile)
+- Choix de la **catégorie** (Culture générale, Sport, Histoire, Science, Films, Musique, Jeux vidéo)
+- Feedback visuel **vert/rouge** sur les réponses pour correct et incorrect
+- Barre de progression en temps réel
+- Confettis si score **≥ 7/10**
+- Bouton **Rejouer** pour recommencer
+- Bouton **Quitter** pour revenir à l'accueil
+- Design **responsive** (mobile & desktop)
+- Animations de transition entre les questions
+
+---
+
+## Technologies utilisées
+
+| Technologie | Rôle |
+|-------------|------|
+| React 19 | Framework front-end |
+| TypeScript | Typage statique |
+| Vite | Bundler et serveur de développement |
+| CSS | Styles et animations |
+| Open Trivia DB | API des questions |
+| canvas-confetti | Animation confettis |
+
+---
+
+## Comment lancer le projet
+
+### Prérequis
+- Node.js installé sur votre machine
+
+### Installation
+```bash
+# Cloner le dépôt
+git clone https://github.com/fatouka929-cmd/quiz-culture-generale
+
+# Aller dans le dossier
+cd quiz-culture-generale
+
+# Installer les dépendances
+npm install
+
+# Lancer le serveur de développement
+npm run dev
+```
+
+L'application sera accessible sur **http://localhost:5173**
+
+---
+
+## Structure du projet
+```
+src/
+├── App.tsx       # Composant principal + logique du quiz
+├── Api.tsx       # Appels API + utilitaires
+├── App.css       # Styles et animations
+├── main.tsx      # Point d'entrée React
+└── index.css     # Styles globaux
+```

@@ -1,51 +1,26 @@
+/* ============================================
+   APP.CSS - Quiz Culture Générale
+   Styles globaux et composants de l'application
+   ============================================ */
+
+
+/* ── BASE ── */
+
 #root {
   max-width: 700px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-}             
+}
 
 body {
   background: linear-gradient(135deg, #101a4e, #764ba2);
   min-height: 100vh;
 }
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
 
 
+/* ── CONTENEUR PRINCIPAL DU QUIZ ── */
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
 .quiz-container {
   background: white;
   border-radius: 20px;
@@ -55,9 +30,10 @@ body {
   height: 500px;
   width: 100%;
   overflow: hidden;
-
-
 }
+
+
+/* ── BARRE DE PROGRESSION ── */
 
 .progress-bar {
   width: 100%;
@@ -74,11 +50,27 @@ body {
   transition: width 0.4s ease;
 }
 
+
+/* ── QUESTION ── */
+
 .question-number {
   font-size: 0.9rem;
   color: #888;
   font-weight: 600;
 }
+
+.question-text {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0f0f0f;
+  margin: 1.5rem 0;
+  line-height: 1.5;
+  text-align: center;
+}
+
+
+/* ── BOUTONS RÉPONSES ── */
+
 .answers-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -107,15 +99,62 @@ body {
   box-shadow: 0 5px 15px rgba(118,75,162,0.4);
 }
 
-
-.question-text {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #0f0f0f;
-  margin: 1.5rem 0;
-  line-height: 1.5;
-  text-align: center;
+/* Feedback visuel bonne/mauvaise réponse */
+.answer-btn.correct {
+  background: #22c55e;
+  color: white;
+  border-color: #22c55e;
 }
+
+.answer-btn.wrong {
+  background: #ef4444;
+  color: white;
+  border-color: #ef4444;
+}
+
+
+/* ── CHRONOMÈTRE ── */
+
+.timer {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #5a3e9b;
+}
+
+/* Le chrono pulse en rouge quand il reste moins de 5 secondes */
+.timer-urgent {
+  color: #ef4444;
+  animation: pulse-timer 0.5s infinite alternate;
+}
+
+@keyframes pulse-timer {
+  from { transform: scale(1); }
+  to { transform: scale(1.2); }
+}
+
+
+/* ── BOUTON QUITTER ── */
+
+.quit-btn {
+  background: none !important;
+  border: 2px solid #e0d4ff;
+  border-radius: 8px;
+  color: #5a3e9b !important;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.4rem 0.8rem;
+  transition: all 0.2s;
+}
+
+.quit-btn:hover {
+  background: #7548bc !important;
+  color: white !important;
+  border-color: #7f3bc3;
+}
+
+
+/* ── ÉCRAN SCORE FINAL ── */
 
 .score-screen {
   text-align: center;
@@ -134,6 +173,12 @@ body {
   margin: 1rem 0;
 }
 
+.bien-joue {
+  font-size: 1.5rem;
+  color: #5a3e9b;
+  font-weight: 600;
+}
+
 .replay-btn {
   background: linear-gradient(135deg, #667eea, #764ba2);
   color: white;
@@ -150,11 +195,9 @@ body {
 .replay-btn:hover {
   transform: scale(1.05);
 }
-.bien-joue {
-  font-size: 1.5rem;
-  color: #5a3e9b;
-  font-weight: 600;
-}
+
+
+/* ── PAGE DE CONFIGURATION ── */
 
 .accueil-titre {
   font-size: 2.5rem;
@@ -171,7 +214,7 @@ body {
   margin-bottom: 2rem;
 }
 
-
+/* Groupes de sélection difficulté/catégorie */
 .select-group {
   display: flex;
   flex-direction: column;
@@ -206,178 +249,8 @@ body {
   border-color: #764ba2;
 }
 
-.answer-btn.correct {
-  background: #22c55e;
-  color: white;
-  border-color: #22c55e;
-}
 
-.answer-btn.wrong {
-  background: #ef4444;
-  color: white;
-  border-color: #ef4444;
-}
-
-
-@keyframes slideIn {
-  from { transform: translateX(100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
-
-@keyframes slideOut {
-  from { transform: translateX(0); opacity: 1; }
-  to { transform: translateX(-100%); opacity: 0; }
-}
-
-.slide-in {
-  animation: slideIn 0.6s ease;
-}
-
-.slide-out {
-  animation: slideOut 0.6s ease;
-}
-
-
-#bouton reprendre
-.quit-btn {
-  background: none !important;
-  border: 2px solid #e0d4ff;
-  border-radius: 8px;
-  color: #5a3e9b !important;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 0.4rem 0.8rem;
-  transition: all 0.2s;
-}
-
-.quit-btn:hover {
-  background: #7548bc;
-  border-color: #7f3bc3;
-}
-
-
-
-#PageAccueil
-.welcome-screen {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-}
-
-.welcome-content {
-  background: white;
-  border-radius: 24px;
-  padding: 3rem;
-  text-align: center;
-  max-width: 500px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-  animation: fadeInUp 0.8s ease;
-}
-
-.welcome-emoji {
-  font-size: 4rem;
-  margin-bottom: 1rem;
-  animation: pulse 2s infinite;
-}
-
-.welcome-titre {
-  font-size: 2.2rem;
-  font-weight: 900;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 1rem;
-  line-height: 1.3;
-}
-
-.welcome-desc {
-  color: #888;
-  font-size: 1rem;
-  line-height: 1.7;
-  margin-bottom: 2rem;
-}
-
-.welcome-stats {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  margin-bottom: 2rem;
-  padding: 1.5rem;
-  background: #f5f0ff;
-  border-radius: 16px;
-}
-
-.stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.stat-number {
-  font-size: 2rem;
-  font-weight: 900;
-  color: #764ba2;
-}
-
-.stat-label {
-  font-size: 0.8rem;
-  color: #888;
-  font-weight: 600;
-}
-
-.welcome-btn {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-  border: none;
-  border-radius: 14px;
-  padding: 1rem 3rem;
-  font-size: 1.2rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  width: 100%;
-}
-
-.welcome-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(118,75,162,0.5);
-}
-
-@keyframes fadeInUp {
-  from { transform: translateY(30px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-}
-
-
-.particles {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.particle {
-  position: absolute;
-  bottom: -10px;
-  background: rgba(255, 255, 255, 0.6);
-  border-radius: 50%;
-  animation: floatUp linear infinite;
-}
-
-@keyframes floatUp {
-  0% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
-  100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
-}
+/* ── PAGE DE BIENVENUE ── */
 
 .welcome-screen {
   display: flex;
@@ -400,6 +273,7 @@ body {
   z-index: 1;
 }
 
+/* Emoji animé en haut de la page de bienvenue */
 .welcome-emoji {
   font-size: 4rem;
   margin-bottom: 1rem;
@@ -423,6 +297,7 @@ body {
   margin-bottom: 2rem;
 }
 
+/* Statistiques : 10 questions, 7 catégories, 3 niveaux */
 .welcome-stats {
   display: flex;
   justify-content: center;
@@ -451,6 +326,7 @@ body {
   font-weight: 600;
 }
 
+/* Bouton principal avec animation de pulse */
 .welcome-btn {
   background: linear-gradient(135deg, #667eea, #764ba2);
   color: white;
@@ -471,35 +347,90 @@ body {
   animation: none;
 }
 
+
+/* ── PARTICULES EN ARRIÈRE-PLAN ── */
+
+/* Conteneur fixe qui couvre tout l'écran sans bloquer les clics */
+.particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Chaque particule monte vers le haut en tournant */
+.particle {
+  position: absolute;
+  bottom: -10px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  animation: floatUp linear infinite;
+}
+
+
+/* ── ANIMATIONS ── */
+
+/* Transition entre les questions */
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOut {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(-100%); opacity: 0; }
+}
+
+.slide-in {
+  animation: slideIn 0.6s ease;
+}
+
+.slide-out {
+  animation: slideOut 0.6s ease;
+}
+
+/* Particules qui montent */
+@keyframes floatUp {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
+  100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+}
+
+/* Apparition depuis le bas */
 @keyframes fadeInUp {
   from { transform: translateY(30px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
 
+/* Rebond de l'emoji */
 @keyframes bounce {
   from { transform: translateY(0); }
   to { transform: translateY(-10px); }
 }
 
+/* Halo lumineux sur le bouton principal */
 @keyframes pulse {
   0%, 100% { box-shadow: 0 0 0 0 rgba(118,75,162,0.4); }
   50% { box-shadow: 0 0 0 15px rgba(118,75,162,0); }
 }
 
 
+/* ── RESPONSIVE MOBILE ── */
 
-/* Responsive Design */
-
- @media (max-width: 600px) {
+@media (max-width: 600px) {
   #root {
     padding: 1rem;
   }
 
+  /* Hauteur fixe supprimée sur mobile */
   .quiz-container {
     height: auto;
     padding: 1.5rem;
   }
 
+  /* Réponses en colonne sur mobile */
   .answers-grid {
     grid-template-columns: 1fr;
   }
@@ -524,4 +455,3 @@ body {
     gap: 1rem;
   }
 }
-
